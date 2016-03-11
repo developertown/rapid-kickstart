@@ -33,7 +33,14 @@ const buildProjectDefinition = (config) => {
 
 const generateModules = (config, projectDef) => {
 
-  //TODO: bail out if dir exists, or prompt to overwrite?
+  try {
+    fs.statSync(projectDef.root); //this will throw an exception if the dir does not exist -- which is nominal
+    console.error(`Project directory ${config.rootDirectory} already exists!`);
+    process.exit(1);
+  } catch (err) {
+    //no-op
+  }
+
   fs.mkdirSync(projectDef.root);
 
   projectDef.modules.forEach((moduleDef) => {
