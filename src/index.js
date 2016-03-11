@@ -1,118 +1,117 @@
+import inquirer from 'inquirer';
+import packageJSON from 'json!../package';
+import Path from 'path';
+import semver from 'semver';
 
-const fs = require('fs');
-const readline = require('readline');
-const Path = require('path');
+import * as util from './lib/util';
 
-const globalModuleProcessor = require('./lib/globalModuleProcessor');
-const commonModuleProcessor = require('./lib/commonModuleProcessor');
-const webModuleProcessor = require('./lib/webModuleProcessor');
-const mobileModuleProcessor = require('./lib/mobileModuleProcessor');
+console.log(`\n\tPrototype Kickstart v${packageJSON.version}\n\n`);
 
-const projectName = process.argv[2];
-const scopePrefix = `@${projectName}`;
-const commonModuleName = `${scopePrefix}/common`
-const projectRootDirectory = Path.join(process.cwd(), projectName);
-const author = "DeveloperTown LLC"; //TODO: factor out to a CLI argument...
 
-const projectDef = {
-  name: projectName,
-  version: "0.0.1",
-  root: projectRootDirectory,
-  author,
-
-  modules: [
-    {
-      name: `${scopePrefix}/common`,
-      root: Path.join(projectRootDirectory, "common"),
-      processors: [commonModuleProcessor],
-      dependencies: {
-        "react": "*",
-        "redux": "*",
-        "redux-thunk": "*",
-        "immutable": "*",
-        "reselect": "*"
-      },
-      links: []
-    },
-    {
-      name: `${scopePrefix}/web`,
-      root: Path.join(projectRootDirectory, "web"),
-      processors: [webModuleProcessor],
-      dependencies: {
-        [commonModuleName]: "*",
-        "react": "*",
-        "react-dom": "*",
-        "react-router": "*",
-        "react-tap-event-plugin": "*",
-
-        "redux": "*",
-        "redux-logger": "*",
-        "redux-thunk": "*",
-        "redux-form": "*",
-        "react-redux": "*",
-        "react-router-redux": "*",
-
-        "immutable": "*",
-        "reselect": "*",
-
-        "firebase": "*",
-        "lodash": "*",
-        "whatwg-fetch": "*",
-
-        "material-ui": "*"
-      },
-      devDependencies: {
-        "babel-core": "*",
-        "babel-loader": "*",
-        "babel-preset-es2015": "*",
-        "babel-preset-react": "*",
-        "babel-plugin-lodash": "*",
-        "exports-loader": "*",        //e.g., injecting fetch polyfill
-        "imports-loader": "*",
-        "expose-loader": "*",         //e.g., expose exports as global, e.g., for React devtools
-
-        "webpack": "*",
-
-        //hot reloading and dev browser experience support:
-        "babel-plugin-react-transform": "*",
-        "babel-preset-react-hmre": "*",
-        "eventsource-polyfill": "*",
-        "express": "*",
-        "react-transform-catch-errors": "*",
-        "react-transform-hmr": "*",
-        "redbox-react": "*",
-        "webpack-dev-middleware": "*",
-        "webpack-hot-middleware": "*",
-        "react-render-visualizer": "*"
-      },
-      links: [
-        Path.join(projectRootDirectory, "common")
-      ]
-    },
-    {
-      name: `${scopePrefix}/mobile`,
-      root: Path.join(projectRootDirectory, "mobile"),
-      processors: [mobileModuleProcessor],
-      dependencies: {
-        [commonModuleName]: "*"
-      },
-      links: [
-        Path.join(projectRootDirectory, "common")
-      ]
-    }
-  ]
+let config = {
+  authorName: "DeveloperTown, LLC",
+  version: "0.0.1"
 };
 
-const print = (msg) => process.stdout.write(msg);
-const println = (msg) => print(`${msg}\n`);
+
+const gatherConfig = () => {
+  inquirer.prompt([
+    {
+      name: "appName",
+      message: "Prototype name:",
+      default: config.appName,
+      validate: (input) => input.trim().length > 0,
+      filter: (input) => input.trim()
+    },
+    {
+      name: "version",
+      message: "Version:",
+      default: config.version,
+      validate: (input) =>
+        (semver.valid(input.trim()) != null) || "Please use a valid semver identifier (http://semver.org/)",
+      filter: (input) => input.trim()
+    },
+    {
+      name: "authorName",
+      message: "Company or client:",
+      default: config.authorName,
+      validate: (input) => input.trim().length > 0,
+      filter: (input) => input.trim()
+    },
+    {
+      name: "moduleTypes",
+      type: "checkbox",
+      message: "Platforms (choose at least one):",
+      choices: ["web", "mobile"],
+      default: config.moduleTypes || ["web"],
+      validate: (input) => input.length > 0,
+      filter: (input) => input.length > 1 ? ["common", ...input] : input
+    },
+    {
+      name: "useGit",
+      type: "confirm",
+      message: "Initialize git for the new repository?",
+      default: true
+    },
+    {
+      name: "useGitFlow",
+      type: "confirm",
+      message: "Initialize git flow for the new repository?",
+      default: true,
+      when: (answers) => answers.useGit
+    }
+
+  ], (_cfg) => {
+
+    //post-process gathered config
+    const whitespaceRegex = /\s/g;
+    let sanitizedAppName = _cfg.appName.toLowerCase().replace(whitespaceRegex, '_');
+
+    config = {
+      ..._cfg,
+      baseName: sanitizedAppName,
+      scope: "@" + sanitizedAppName,
+      rootDirectory: Path.join(process.cwd(), sanitizedAppName)
+    };
 
 
-println("Generating root directory...");
-fs.mkdirSync(projectDef.root);
+    //confirm config with user
+    console.log(config);
+    inquirer.prompt([{
+      name: "confirmed",
+      type: "confirm",
+      message: "Does this configuration look correct?",
+      default: true
+    }], (x) => {
+      if (!x.confirmed) {
+        //again!
+        gatherConfig();
+      } else {
 
-projectDef.modules.forEach((moduleDef) => {
-  println(`Generating ${moduleDef.name}...`);
+        const projectDefinition = util.buildProjectDefinition(config);
+        util.generateModules(config, projectDefinition);
+      }
+    });
 
-  moduleDef.processors.forEach((processor) => processor(projectDef, moduleDef));
-  globalModuleProcessor(projectDef, moduleDef);
-});
+
+
+  });
+};
+
+gatherConfig();
+
+
+
+//var loader = [
+//  "/ Installing",
+//  "| Installing",
+//  "\\ Installing",
+//  "- Installing"
+//];
+//var i = 4;
+//var ui = new inquirer.ui.BottomBar({ bottomBar: loader[i % 4] });
+//
+//setInterval(function() {
+//  ui.updateBottomBar( loader[i++ % 4] );
+//}, 300 );
+

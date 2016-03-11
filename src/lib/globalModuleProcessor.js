@@ -1,7 +1,7 @@
 
-const fs = require('fs');
-const execSync = require('child_process').execSync;
-const Path = require('path');
+import fs from 'fs'
+import { execSync } from 'child_process';
+import Path from 'path';
 
 //Update package.json with common attributes
 const updatePackageJSON = (projectDef, moduleDef) => {
@@ -23,6 +23,7 @@ const udpateLinks = (moduleDef) => {
   for (let l of moduleDef.links) {
     console.log(`getting ready to execute: 'npm link ${l}' in '${moduleDef.root}'`);
     execSync(`npm link ${l}`, {cwd: moduleDef.root});
+    console.log("done with npm link");
   }
 };
 
@@ -45,12 +46,11 @@ const updateNPM = (moduleDef) => {
 
 
 
-
-module.exports = (projectDef, moduleDef) => {
-
+const processGlobalUpdates = (projectDef, moduleDef) => {
   updatePackageJSON(projectDef, moduleDef);
   udpateLinks(moduleDef);
   updateGitIgnore(moduleDef);
   updateNPM(moduleDef);
-
 };
+
+export default processGlobalUpdates;

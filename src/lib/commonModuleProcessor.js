@@ -1,8 +1,8 @@
+import fs from 'fs'
+import Path from 'path';
+import globalModuleProcessor from './globalModuleProcessor';
 
-const fs = require('fs');
-const Path = require('path');
-
-module.exports = (projectDef, moduleDef) => {
+const commonModuleProcessor = (projectDef, moduleDef) => {
   const directories = [
     ["src"],
     ["src", "actions"],
@@ -11,7 +11,7 @@ module.exports = (projectDef, moduleDef) => {
     ["src", "reducers"],
     ["src", "store"],
     ["tests"]
-  ]
+  ];
 
   //Create directory structure
   fs.mkdirSync(moduleDef.root);
@@ -32,3 +32,27 @@ module.exports = (projectDef, moduleDef) => {
     devDependencies: moduleDef.devDependencies
   }, null, 2));
 };
+
+
+const buildCommonModuleDefinition = (config) => {
+  return {
+    name: `${config.scope}/common`,
+    root: Path.join(config.rootDirectory, "common"),
+    processors: [
+      commonModuleProcessor,
+      globalModuleProcessor
+    ],
+    dependencies: {
+      "react": "*",
+      "redux": "*",
+      "redux-thunk": "*",
+      "immutable": "*",
+      "reselect": "*"
+    },
+    links: []
+  }
+};
+
+
+export default commonModuleProcessor;
+export { buildCommonModuleDefinition };

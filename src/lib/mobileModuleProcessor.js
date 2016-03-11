@@ -1,11 +1,13 @@
+import fs from 'fs'
+import { execSync } from 'child_process';
+import Path from 'path';
+import _ from 'lodash';
 
-const fs = require('fs');
-const execSync = require('child_process').execSync;
-const Path = require('path');
+import globalModuleProcessor from './globalModuleProcessor';
 
 const generator = 'react-native init mobile';
 
-module.exports = (projectDef, moduleDef) => {
+const mobileModuleProcessor = (projectDef, moduleDef) => {
   try {
     execSync(generator, {cwd: projectDef.root});
   } catch (e) {
@@ -20,17 +22,43 @@ module.exports = (projectDef, moduleDef) => {
     name: moduleDef.name,
     description: moduleDef.name,
     dependencies: Object.assign(
-      {},
-      pkg.dependencies,
-      moduleDef.dependencies
+        {},
+        pkg.dependencies,
+        moduleDef.dependencies
     ),
     devDependencies: Object.assign(
-      {},
-      pkg.devDependencies,
-      moduleDef.devDependencies
+        {},
+        pkg.devDependencies,
+        moduleDef.devDependencies
     )
   });
 
   fs.writeFileSync(pkgJSONPath, JSON.stringify(pkg, null, 2));
 
 };
+
+
+const buildMobileModuleDefinition = (config) => {
+
+  const moduleDef = {
+    name: `${config.scope}/mobile`,
+    root: Path.join(config.rootDirectory, "mobile"),
+    processors: [
+      mobileModuleProcessor,
+      globalModuleProcessor
+    ],
+    dependencies: {},
+    links: []
+  };
+
+  if (_.includes(config.moduleTypes, "common")) {
+    moduleDef.dependencies[`${config.scope}/common`] = "*";
+    moduleDef.links.push(Path.join(config.rootDirectory, "common"));
+  }
+
+  return moduleDef;
+};
+
+
+export default mobileModuleProcessor;
+export { buildMobileModuleDefinition };
