@@ -1,26 +1,13 @@
-import fs from 'fs';
+import fs from 'fs-extra';
 import Path from 'path';
 import _ from 'lodash';
 
 import globalModuleProcessor from './globalModuleProcessor';
 
 const webModuleProcessor = (projectDef, moduleDef) => {
-  const directories = [
-    ["src"],
-    ["src", "actions"],
-    ["src", "components"],
-    ["src", "containers"],
-    ["src", "reducers"],
-    ["src", "store"],
-    ["tests"]
-  ];
 
-  //Create directory structure
-  fs.mkdirSync(moduleDef.root);
-  for (let d of directories) {
-    fs.mkdirSync(Path.join(moduleDef.root, ...d));
-    fs.writeFileSync(Path.join(moduleDef.root, ...d, ".gitkeep"), '');
-  }
+  //copy static resources into the new module root
+  fs.copySync(Path.join(DISTDIR, "web"), moduleDef.root);
 
   //Write out initial package.json (modified by global processor later)
   fs.writeFileSync(Path.join(moduleDef.root, "package.json"), JSON.stringify({
@@ -28,10 +15,30 @@ const webModuleProcessor = (projectDef, moduleDef) => {
     description: moduleDef.name,
     main: "src/index.js",
     scripts: {
-      test: "echo \"Error: no test specified\" && exit 1"
+      test: "jest",
+      start: "node server-dev"
     },
     dependencies: moduleDef.dependencies,
-    devDependencies: moduleDef.devDependencies
+    devDependencies: moduleDef.devDependencies,
+    babel: {
+      "presets": [
+        "es2015",
+        "react",
+        "stage-0"
+      ]
+    },
+    jest: {
+      unmockedModulePathPatterns: [
+        "<rootDir>/node_modules/react",
+        "<rootDir>/node_modules/react-dom",
+        "<rootDir>/node_modules/react-addons-test-utils"
+      ],
+      moduleFileExtensions: [
+        "js",
+        "json",
+        "jsx"
+      ]
+    }
   }, null, 2));
 };
 
@@ -70,12 +77,15 @@ const buildWebModuleDefinition = (config) => {
     },
     devDependencies: {
       "babel-core": "*",
+      "babel-jest": "*",
       "babel-loader": "*",
       "babel-preset-es2015": "*",
       "babel-preset-react": "*",
+      "babel-preset-stage-0": "*",
       "babel-plugin-lodash": "*",
       "exports-loader": "*",        //e.g., injecting fetch polyfill
       "imports-loader": "*",
+      "jest-cli": "*",
       "expose-loader": "*",         //e.g., expose exports as global, e.g., for React devtools
 
       "webpack": "*",
