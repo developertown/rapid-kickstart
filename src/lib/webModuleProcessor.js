@@ -59,6 +59,7 @@ const buildWebModuleDefinition = (config) => {
 
       "redux": "*",
       "redux-logger": "*",
+      "redux-promise": "*",
       "redux-thunk": "*",
       "redux-form": "*",
       "react-redux": "*",
@@ -71,11 +72,15 @@ const buildWebModuleDefinition = (config) => {
       "lodash": "*",
       "whatwg-fetch": "*",
 
-      "material-ui": "*",
 
-      "rapid-firebase-authentication": "*"
     },
     devDependencies: {
+      "react-toolbox": "*",
+      "normalize.css": "*",
+      "react-addons-css-transition-group": "*",
+
+      "rapid-firebase-authentication": "*",
+      "autoprefixer": "*",
       "babel-core": "*",
       "babel-jest": "*",
       "babel-loader": "*",
@@ -83,9 +88,18 @@ const buildWebModuleDefinition = (config) => {
       "babel-preset-react": "*",
       "babel-preset-stage-0": "*",
       "babel-plugin-lodash": "*",
+      "css-loader": "*",
       "exports-loader": "*",        //e.g., injecting fetch polyfill
       "imports-loader": "*",
       "jest-cli": "*",
+      "postcss-loader": "*",
+      "sass-loader": "*",
+      "node-sass": "*",
+      "style-loader": "*",
+      "toolbox-loader": "*",
+      "normalize.css": "*",
+      "react-addons-css-transition-group": "*",
+      "extract-text-webpack-plugin": "*",
       "expose-loader": "*",         //e.g., expose exports as global, e.g., for React devtools
 
       "webpack": "*",
