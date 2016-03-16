@@ -1,6 +1,6 @@
 {
   "name": "rapid-kickstart",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "repository": "developertown/rapid-kickstart",
   "description": "Simple script to kickoff rapid prototyping projects",
   "homepage": "https://github.com/developertown/rapid-kickstart",
@@ -19,7 +19,7 @@
   "main": "./dist/kickstart.js",
   "scripts": {
     "start": "webpack && node dist/kickstart",
-    "prepublish": "webpack"
+    "prepublish": "rm -rf ./dist && webpack"
   },
   "bin": {
     "kickstart": "./dist/kickstart.js"
