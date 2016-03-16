@@ -2,18 +2,31 @@
 import fs from 'fs'
 import { execSync } from 'child_process';
 import Path from 'path';
+import _ from 'lodash';
 
 //Update package.json with common attributes
 const updatePackageJSON = (projectDef, moduleDef) => {
   let pkgJSONPath = Path.join(moduleDef.root, "package.json");
   let pkg = JSON.parse(fs.readFileSync(pkgJSONPath));
 
+  //Assign project and module-level specifics
   pkg = Object.assign({}, pkg, {
     private: true,
+    name: `${projectDef.scope}/${moduleDef.type}`,
     author: projectDef.author,
     license: "UNLICENSED",
-    version: projectDef.version
+    version: projectDef.version,
+    description: projectDef.friendlyName
   });
+
+  //Add any additional dependencies
+  pkg.dependencies = {...pkg.dependencies, ...moduleDef.dependencies};
+  pkg.devDependencies = {...pkg.devDependencies, ...moduleDef.devDependencies};
+
+  if (_.includes(projectDef.moduleTypes, "common")) {
+    moduleDef.dependencies[`${projectDef.scope}/common`] = "*";
+    moduleDef.links.push(Path.join(projectDef.root, "common"));
+  }
 
   fs.writeFileSync(pkgJSONPath, JSON.stringify(pkg, null, 2));
 };

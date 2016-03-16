@@ -1,0 +1,86 @@
+{
+  "name": "<SETME>",
+  "description": "<SETME>",
+  "main": "src/index.js",
+  "private": true,
+  "author": "<SETME>",
+  "license": "<SETME>",
+  "version": "<SETME>",
+  "scripts": {
+    "test": "jest",
+    "start": "node server-dev"
+  },
+  "dependencies": {
+    "firebase": "*",
+    "immutable": "*",
+    "lodash": "*",
+    "react": "*",
+    "react-dom": "*",
+    "react-redux": "*",
+    "react-router": "*",
+    "react-router-redux": "*",
+    "react-tap-event-plugin": "*",
+    "redux": "*",
+    "redux-form": "*",
+    "redux-logger": "*",
+    "redux-promise": "*",
+    "redux-thunk": "*",
+    "reselect": "*",
+    "whatwg-fetch": "*"
+  },
+  "devDependencies": {
+    "react-toolbox": "*",
+    "normalize.css": "*",
+    "react-addons-css-transition-group": "*",
+    "rapid-firebase-authentication": "*",
+    "autoprefixer": "*",
+    "babel-core": "*",
+    "babel-jest": "*",
+    "babel-loader": "*",
+    "babel-preset-es2015": "*",
+    "babel-preset-react": "*",
+    "babel-preset-stage-0": "*",
+    "babel-plugin-lodash": "*",
+    "css-loader": "*",
+    "exports-loader": "*",
+    "imports-loader": "*",
+    "jest-cli": "*",
+    "postcss-loader": "*",
+    "sass-loader": "*",
+    "node-sass": "*",
+    "style-loader": "*",
+    "toolbox-loader": "*",
+    "extract-text-webpack-plugin": "*",
+    "expose-loader": "*",
+    "webpack": "*",
+    "babel-plugin-react-transform": "*",
+    "babel-preset-react-hmre": "*",
+    "eventsource-polyfill": "*",
+    "express": "*",
+    "react-transform-catch-errors": "*",
+    "react-transform-hmr": "*",
+    "redbox-react": "*",
+    "webpack-dev-middleware": "*",
+    "webpack-hot-middleware": "*",
+    "react-render-visualizer": "*"
+  },
+  "babel": {
+    "presets": [
+      "es2015",
+      "react",
+      "stage-0"
+    ]
+  },
+  "jest": {
+    "unmockedModulePathPatterns": [
+      "<rootDir>/node_modules/react",
+      "<rootDir>/node_modules/react-dom",
+      "<rootDir>/node_modules/react-addons-test-utils"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "jsx"
+    ]
+  }
+}

@@ -14,27 +14,6 @@ const mobileModuleProcessor = (projectDef, moduleDef) => {
     console.log("\n\nError executing react-native project generator.  Did you install it with: `npm install react-native-cli`?");
     process.exit(1);
   }
-
-  let pkgJSONPath = Path.join(moduleDef.root, "package.json");
-  let pkg = JSON.parse(fs.readFileSync(pkgJSONPath));
-
-  pkg = Object.assign(pkg, {
-    name: moduleDef.name,
-    description: moduleDef.name,
-    dependencies: Object.assign(
-        {},
-        pkg.dependencies,
-        moduleDef.dependencies
-    ),
-    devDependencies: Object.assign(
-        {},
-        pkg.devDependencies,
-        moduleDef.devDependencies
-    )
-  });
-
-  fs.writeFileSync(pkgJSONPath, JSON.stringify(pkg, null, 2));
-
 };
 
 
@@ -42,19 +21,16 @@ const buildMobileModuleDefinition = (config) => {
 
   const moduleDef = {
     name: `${config.scope}/mobile`,
+    type: 'mobile',
     root: Path.join(config.rootDirectory, "mobile"),
     processors: [
       mobileModuleProcessor,
       globalModuleProcessor
     ],
     dependencies: {},
+    devDependencies: {},
     links: []
   };
-
-  if (_.includes(config.moduleTypes, "common")) {
-    moduleDef.dependencies[`${config.scope}/common`] = "*";
-    moduleDef.links.push(Path.join(config.rootDirectory, "common"));
-  }
 
   return moduleDef;
 };

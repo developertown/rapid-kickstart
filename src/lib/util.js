@@ -17,10 +17,13 @@ const moduleDefBuilders = {
 const buildProjectDefinition = (config) => {
 
   const projectDefinition = {
+    friendlyName: config.appName,
     name: config.baseName,
     version: config.version,
     root: config.rootDirectory,
     author: config.authorName,
+    moduleTypes: config.moduleTypes,
+    scope: config.scope,
     modules: []
   };
 
