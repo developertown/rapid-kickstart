@@ -9,7 +9,7 @@ const appName = undefined;
 const firebaseAppName = undefined;
 
 // Set this to false when you're done with the config :)
-const appNeedsConfiguration = false;
+const appNeedsConfiguration = true;
 
 // === End Required Configuration options ======================================
 
