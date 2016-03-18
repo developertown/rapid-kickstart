@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
 const merge = require('webpack-merge');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 
 const TARGET = process.env.npm_lifecycle_event;
@@ -14,12 +15,10 @@ const PATHS = {
 
 const common = {
   context: __dirname,
-  devtool: 'source-map',
   entry: PATHS.src,
   output: {
     path: PATHS.dist,
-    filename: 'bundle.js',
-    publicPath: '/static/'
+    filename: 'bundle.js'
   },
   resolve: {
     extensions: ['', '.js', '.jsx', '.scss', '.json'],
@@ -32,7 +31,8 @@ const common = {
     new webpack.NoErrorsPlugin(),
     new webpack.ProvidePlugin({
       'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
-    })
+    }),
+    new HtmlWebpackPlugin()
   ],
   module: {
     loaders: [
@@ -82,13 +82,17 @@ if (TARGET === 'start' || !TARGET) {
 
 if (TARGET === 'dist') {
   module.exports = merge(common, {
+    devtool: 'source-map',
     module: {
       loaders: [
         { test: /\.s?css$/, loader: ExtractTextPlugin.extract('style', 'css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass?sourceMap!toolbox') }
       ]
     },
     plugins: [
-      new ExtractTextPlugin("bundle.css", { allChunks: true })
+      new ExtractTextPlugin("bundle.css", { allChunks: true }),
+      new webpack.optimize.UglifyJsPlugin(),
+      new webpack.optimize.DedupePlugin(),
+      new webpack.optimize.MinChunkSizePlugin({minChunkSize: 10000})
     ]
   });
 }

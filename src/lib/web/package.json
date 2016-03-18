@@ -9,7 +9,7 @@
   "scripts": {
     "test": "jest",
     "start": "webpack-dev-server --hot --inline",
-    "dist": "webpack"
+    "dist": "rm -rf ./dist && NODE_ENV=production webpack"
   },
   "dependencies": {},
   "devDependencies": {
@@ -36,6 +36,8 @@
     "express": "*",
     "extract-text-webpack-plugin": "*",
     "firebase": "*",
+    "html-loader": "*",
+    "html-webpack-plugin": "*",
     "immutable": "*",
     "imports-loader": "*",
     "jest-cli": "*",

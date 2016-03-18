@@ -19,7 +19,8 @@
   "main": "./dist/kickstart.js",
   "scripts": {
     "start": "webpack && node dist/kickstart",
-    "prepublish": "rm -rf ./dist && webpack"
+    "dist": "rm -rf ./dist && NODE_ENV=production webpack",
+    "prepublish": "npm run dist"
   },
   "bin": {
     "kickstart": "./dist/kickstart.js"
