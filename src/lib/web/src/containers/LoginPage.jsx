@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { replace } from 'react-router-redux';
@@ -13,6 +13,18 @@ import { firebase } from '../config';
 
 
 class LoginPage extends Component {
+
+  static propTypes = {
+    onLogin: React.PropTypes.func.isRequired,
+    replaceRoute: React.PropTypes.func.isRequired,
+    loggedIn: React.PropTypes.bool,
+    nextPath: React.PropTypes.string
+  };
+
+  static defaultProps = {
+    loggedIn: false
+  };
+
   state = { email: '', password: ''};
 
   handleChange(name, value) {

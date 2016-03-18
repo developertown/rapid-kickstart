@@ -1,5 +1,5 @@
 import { render } from 'react-dom';
-import { Router, Route, DefaultRoute, IndexRoute, browserHistory } from 'react-router'
+import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
 
 import { applyMiddleware, createStore } from 'redux';

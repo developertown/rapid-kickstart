@@ -1,16 +1,26 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { replace } from 'react-router-redux';
 
 const requireAuthentication = (ComponentToProtect) => {
   class AuthenticatedComponent extends Component {
+    static propTypes = {
+      replaceRoute: React.PropTypes.func.isRequired,
+      loggedIn: React.PropTypes.bool.isRequired,
+      currentPath: React.PropTypes.string.isRequired
+    };
+
+    static defaultProps = {
+      loggedIn: false
+    };
+
     componentWillMount() {
-      this.checkAuth(this.props.session.loggedIn);
+      this.checkAuth(this.props.loggedIn);
     }
 
     componentWillReceiveProps(nextProps) {
-      this.checkAuth(nextProps.session.loggedIn);
+      this.checkAuth(nextProps.loggedIn);
     }
 
     checkAuth(isAuthenticated) {
@@ -20,10 +30,10 @@ const requireAuthentication = (ComponentToProtect) => {
     }
 
     render() {
-      const { session } = this.props;
+      const { loggedIn } = this.props;
 
       let componentToRender = null;
-      if (session.loggedIn === true) {
+      if (loggedIn === true) {
         componentToRender = <ComponentToProtect {...this.props}/>
       }
 
@@ -34,7 +44,7 @@ const requireAuthentication = (ComponentToProtect) => {
   const mapStateToProps = (state, ownProps) => {
     return {
       currentPath: ownProps.location.pathname,
-      session: state.session
+      loggedIn: state.session.loggedIn
     };
   };
 

@@ -1,5 +1,5 @@
-import { Component } from 'react';
-import { IndexLink, Link } from 'react-router';
+import React, { Component } from 'react';
+import { IndexLink } from 'react-router';
 
 import AppBar from 'react-toolbox/lib/app_bar';
 
@@ -9,10 +9,9 @@ import Navigation from './navigation';
 import style from './style';
 import linkStyle from 'react-toolbox/lib/link/style';
 
-import { appName } from '../../config';
-
 class Header extends Component {
   static propTypes = {
+    loggedIn: React.PropTypes.bool.isRequired,
     activeClassName: React.PropTypes.string,
     className: React.PropTypes.string,
     logoutCallback: React.PropTypes.func.isRequired,
@@ -20,6 +19,7 @@ class Header extends Component {
   };
 
   static defaultProps = {
+    loggedIn: false,
     activeClassName: '',
     className: ''
   };

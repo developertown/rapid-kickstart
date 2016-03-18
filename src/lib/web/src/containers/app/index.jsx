@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -14,6 +14,16 @@ import style from './style';
 
 
 class App extends Component {
+  static propTypes = {
+    restoreSession: React.PropTypes.func.isRequired,
+    logoutCallback: React.PropTypes.func.isRequired,
+    loggedIn: React.PropTypes.bool.isRequired,
+    children: React.PropTypes.object
+  };
+
+  static defaultProps = {
+    children: {}
+  };
 
   componentWillMount() {
     this.props.restoreSession();

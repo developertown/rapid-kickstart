@@ -4,72 +4,110 @@
   "main": "src/index.js",
   "private": true,
   "author": "<SETME>",
-  "license": "<SETME>",
-  "version": "<SETME>",
+  "license": "UNLICENSED",
+  "version": "0.0.1",
   "scripts": {
     "test": "jest",
-    "start": "node server-dev"
+    "start": "webpack-dev-server --hot --inline",
+    "dist": "webpack"
   },
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
+    "autoprefixer": "*",
+    "babel-core": "*",
+    "babel-eslint": "*",
+    "babel-jest": "*",
+    "babel-loader": "*",
+    "babel-plugin-lodash": "*",
+    "babel-plugin-react-transform": "*",
+    "babel-plugin-transform-node-env-inline": "*",
+    "babel-preset-es2015": "*",
+    "babel-preset-react": "*",
+    "babel-preset-react-hmre": "*",
+    "babel-preset-stage-0": "*",
+    "css-loader": "*",
+    "eslint": "~2.2.0",
+    "eslint-loader": "*",
+    "eslint-plugin-babel": "*",
+    "eslint-plugin-react": "*",
+    "eventsource-polyfill": "*",
+    "exports-loader": "*",
+    "expose-loader": "*",
+    "express": "*",
+    "extract-text-webpack-plugin": "*",
     "firebase": "*",
     "immutable": "*",
+    "imports-loader": "*",
+    "jest-cli": "*",
     "lodash": "*",
+    "node-sass": "*",
+    "normalize.css": "*",
+    "postcss-loader": "*",
+    "rapid-firebase-authentication": "*",
     "react": "*",
+    "react-addons-css-transition-group": "*",
     "react-dom": "*",
     "react-redux": "*",
+    "react-render-visualizer": "*",
     "react-router": "*",
     "react-router-redux": "*",
     "react-tap-event-plugin": "*",
+    "react-toolbox": "*",
+    "react-transform-catch-errors": "*",
+    "react-transform-hmr": "*",
+    "redbox-react": "*",
     "redux": "*",
     "redux-form": "*",
     "redux-logger": "*",
     "redux-promise": "*",
     "redux-thunk": "*",
     "reselect": "*",
-    "whatwg-fetch": "*"
-  },
-  "devDependencies": {
-    "react-toolbox": "*",
-    "normalize.css": "*",
-    "react-addons-css-transition-group": "*",
-    "rapid-firebase-authentication": "*",
-    "autoprefixer": "*",
-    "babel-core": "*",
-    "babel-jest": "*",
-    "babel-loader": "*",
-    "babel-preset-es2015": "*",
-    "babel-preset-react": "*",
-    "babel-preset-stage-0": "*",
-    "babel-plugin-lodash": "*",
-    "css-loader": "*",
-    "exports-loader": "*",
-    "imports-loader": "*",
-    "jest-cli": "*",
-    "postcss-loader": "*",
     "sass-loader": "*",
-    "node-sass": "*",
     "style-loader": "*",
     "toolbox-loader": "*",
-    "extract-text-webpack-plugin": "*",
-    "expose-loader": "*",
     "webpack": "*",
-    "babel-plugin-react-transform": "*",
-    "babel-preset-react-hmre": "*",
-    "eventsource-polyfill": "*",
-    "express": "*",
-    "react-transform-catch-errors": "*",
-    "react-transform-hmr": "*",
-    "redbox-react": "*",
-    "webpack-dev-middleware": "*",
-    "webpack-hot-middleware": "*",
-    "react-render-visualizer": "*"
+    "webpack-dev-server": "*",
+    "webpack-merge": "*",
+    "whatwg-fetch": "*"
   },
   "babel": {
     "presets": [
       "es2015",
       "react",
       "stage-0"
+    ],
+    "env": {
+      "development": {
+        "presets": [
+          "react-hmre"
+        ]
+      }
+    },
+    "plugins": [
+      "transform-node-env-inline"
     ]
+  },
+  "eslintConfig": {
+    "parser": "babel-eslint",
+    "env": {
+      "browser": true,
+      "commonjs": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 7
+    },
+    "plugins": [
+      "react"
+    ],
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended"
+    ],
+    "globals": {
+      "React": true,
+      "process": false,
+      "fetch": false
+    }
   },
   "jest": {
     "unmockedModulePathPatterns": [

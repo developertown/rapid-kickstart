@@ -1,24 +1,26 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { IndexLink, Link } from 'react-router';
 
 class Navigation extends Component {
   static propTypes = {
+    loggedIn: React.PropTypes.bool.isRequired,
     activeClassName: React.PropTypes.string,
     className: React.PropTypes.string,
     logoutCallback: React.PropTypes.func.isRequired
   };
 
   static defaultProps = {
+    loggedIn: false,
     activeClassName: '',
     className: ''
   };
 
   render() {
     const { loggedIn, logoutCallback } = this.props;
-    
+
     return (
       <nav className={this.props.className}>
-        {this.props.loggedIn ? (
+        {loggedIn ? (
           <ul>
             <li><a onClick={logoutCallback}>Logout</a></li>
             <li><IndexLink activeClassName={this.props.activeClassName} to='/'>Landing</IndexLink></li>
