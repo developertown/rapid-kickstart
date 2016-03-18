@@ -32,7 +32,10 @@ const common = {
     new webpack.ProvidePlugin({
       'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
     }),
-    new HtmlWebpackPlugin()
+    new HtmlWebpackPlugin({
+      template: "html!" + Path.join(PATHS.src, "index.html"),
+      inject: true
+    })
   ],
   module: {
     loaders: [
