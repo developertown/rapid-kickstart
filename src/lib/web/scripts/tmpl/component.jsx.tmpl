@@ -1,0 +1,21 @@
+import { Component } from 'react';
+
+import styles from './styles';
+
+{if requiresAuthentication}
+// NOTE: This component was declared as requiring authentication.
+// Be sure to decorate its usage within routes with
+// `requiresAuthentication({componentName})`.
+// e.g., <Route path='foo' component={requiresAuthentication({componentName})}/>
+{/if}
+class {componentName} extends Component {
+  render() {
+    return (
+        <div>
+          <h3>{pageName}</h3>
+        </div>
+    );
+  }
+}
+
+export default {componentName};
