@@ -94,7 +94,7 @@ const buildWebModuleDefinition = (config) => {
       "jest-cli": "*",
       "postcss-loader": "*",
       "sass-loader": "*",
-      "node-sass": "*",
+      "node-sass": "=3.4.2",
       "style-loader": "*",
       "toolbox-loader": "*",
       "normalize.css": "*",
