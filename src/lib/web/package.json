@@ -114,6 +114,9 @@
       "React": true,
       "process": false,
       "fetch": false
+    },
+    "rules": {
+      "no-console": "warn"
     }
   },
   "jest": {
