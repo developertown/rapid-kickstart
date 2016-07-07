@@ -5,16 +5,19 @@ This tool provides a "jumpstart" for creating web and mobile applications that f
 ## Setup
 
 * **Node.js + NPM**: Testing is limited currently to 5.3.0+.  If you don't currently have node installed, we prefer to install via [nodenv](https://github.com/nodenv/nodenv) and the related [nodenv build](https://github.com/nodenv/node-build).  On MacOS, you can install both via [Homebrew](http://brew.sh/) by running:
+
     ```bash
     brew install nodenv node-build
     nodenv install 5.7.1
     ```
 * **React Native** (Optional): Used for prototypes that select a mobile app option, kickstart requires the react-native-cli package to be installed.   You can install it and its dependencies by running:
+
     ```bash
     brew install watchman flow
     npm install -g react-native-cli
     ```
 * **Kickstart!**: Just install the kickstart script with:
+
     ```bash
     npm install -g rapid-kickstart
     ```
